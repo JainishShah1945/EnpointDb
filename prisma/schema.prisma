@@ -1,0 +1,76 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       Int    @id @default(autoincrement())
+  name     String
+  email    String @unique
+  password String
+  likes    Like[]
+  like    LikeCinema[]
+
+}
+
+model Like {
+  id      Int @id @default(autoincrement())
+  userId  Int
+  movieId Int
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  movie Movie @relation(fields: [movieId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, movieId])
+}
+
+model LikeCinema {
+  id      Int @id @default(autoincrement())
+  userId  Int
+  cinemaId Int
+
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  cinema Cinema @relation(fields: [cinemaId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, cinemaId])
+}
+
+model Cinema {
+  id     Int           @id @default(autoincrement())
+  name   String        @unique
+  movies CinemaMovie[]
+  like LikeCinema[]
+}
+
+model Movie {
+  id        Int      @id @default(autoincrement())
+  omdbId    String   @unique
+  title     String
+  createdAt DateTime @default(now())
+  post      String   @default("Unknown")
+
+  cinemas CinemaMovie[]
+
+  Like Like[]
+}
+
+model CinemaMovie {
+  cinemaId Int
+  movieId  Int
+
+  cinema Cinema @relation(fields: [cinemaId], references: [id], onDelete: Cascade)
+  movie  Movie  @relation(fields: [movieId], references: [id], onDelete: Cascade)
+
+  @@id([cinemaId, movieId])
+}
