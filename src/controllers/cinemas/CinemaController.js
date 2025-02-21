@@ -20,7 +20,7 @@ const fetchCinemas = async (req, res) => {
       console.log(cinema.name);
 
       if (!cinema.id || !cinema.name) {
-        console.warn("Skipping cinema with missing ID or name:", cinema);
+        console.warn("Skipping cinema with missing ID or name", cinema);
         continue;
       }
 

@@ -34,6 +34,19 @@ const LikeMovie = async (req, res) => {
         movieId,
       },
     });
+    
+    await prisma.log.create({
+    data :{
+      userId,
+      action: "LIKE",
+      entity: "MOVIE",
+      entityId: movieId,
+      message : "Movie was liked"
+      }
+    });
+
+        
+
 
     return res.status(200).json({ message: "Movie liked successfully" });
   } catch (error) {

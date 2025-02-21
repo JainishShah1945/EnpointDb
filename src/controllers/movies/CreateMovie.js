@@ -1,8 +1,10 @@
 const knex = require("../../config/knex");
 
 const CreateMovie = async (req, res) => {
+
   try {
     const { omdbId, title, post } = req.body;
+    const userId = req.user.id
 
     if (
       !omdbId ||
@@ -23,6 +25,14 @@ const CreateMovie = async (req, res) => {
       post
     });
 
+    await knex("log").insert({
+    userId:userId,
+    action: "CREATE",
+      entity: "MOVIE",
+      entityId: newMovie[0],
+      message : "New Cinema Created"
+      
+})
     return res
       .status(201)
       .json({ message: "Movie added successfully", movieId: newMovie[0] });

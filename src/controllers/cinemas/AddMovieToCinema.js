@@ -27,6 +27,7 @@ const addMovieToCinema = async (req, res) => {
       },
     });
 
+
     res.status(200).json({ message: "Movie added to cinema successfully" });
   } catch (error) {
     console.error("Error adding movie to cinema:", error);

@@ -34,9 +34,21 @@ const LikeCinema = async (req, res) => {
         cinemaId,
       },
     });
+  
+
+    await prisma.log.create({
+    data: {
+    userId,
+    action : "LIKE",
+    entity : "CINEMA",
+    entityId : cinemaId,
+    message : "CINEMA WAS LIKED"
+    }
+    });
 
     return res.status(200).json({ message: "cinema liked successfully" });
   } catch (error) {
+
     console.error("Error liking cinema:", error);
     return res.status(500).json({ error: "Internal Server Error" });
   }

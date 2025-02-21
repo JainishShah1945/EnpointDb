@@ -20,7 +20,7 @@ model User {
   password String
   likes    Like[]
   like    LikeCinema[]
-
+  log      Log[]
 }
 
 model Like {
@@ -74,3 +74,38 @@ model CinemaMovie {
 
   @@id([cinemaId, movieId])
 }
+model Log {
+  id        Int      @id @default(autoincrement()) 
+  userId    Int      
+  action    Action   
+  entity    Entity   
+  entityId  Int   
+  message String
+  timestamp DateTime @default(now()) 
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum Action {
+  FETCH
+  GET
+  CREATE
+  POST
+  PUT
+  DELETE
+  LIKE
+  DISLIKE
+}
+
+enum Entity {
+  MOVIE
+  CINEMA
+  LIKE
+}
+
+model master {
+  id Int @unique @default(autoincrement())
+  sync_id Int 
+  movieId Int
+}
+
