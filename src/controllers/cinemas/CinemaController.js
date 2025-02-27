@@ -12,7 +12,7 @@ const fetchCinemas = async (req, res) => {
     }
 
     const response = await axios.get(CINEMA_API);
-    const cinemas = response.data.data;
+    const cinemas = response.data;
 
     console.log(cinemas);
 

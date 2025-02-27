@@ -21,6 +21,7 @@ model User {
   likes    Like[]
   like    LikeCinema[]
   log      Log[]
+  subscription Subscription[]
 }
 
 model Like {
@@ -109,3 +110,23 @@ model master {
   movieId Int
 }
 
+model Payment {
+  id Int @id @default(autoincrement())
+  orderId String
+  razorpay_paymentId String
+  razorpay_signature String
+  razorpay_orderId String
+}
+
+
+model Subscription {
+id Int @id @default(autoincrement())
+userId Int @unique
+razorpayId String @unique
+status String
+createdAt DateTime @default(now())
+startDate DateTime
+endDate DateTime
+updateAt DateTime @updatedAt
+user User @relation(fields: [userId],references: [id],onDelete: Cascade)
+}
